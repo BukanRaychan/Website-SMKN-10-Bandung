@@ -1,2 +1,4 @@
-# Website-SMKN-10-Bandung
-Build with Laravel, React, Inertia, Tailwindcss
+# Setup
+
+1. open cmd type
+``composer create-project laravel/laravel <project name>``
