@@ -1,26 +1,27 @@
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { Route, Routes } from 'react-router-dom';
-import Jurusan from './component/jurusan/Jurusan.jsx';
+import Jurusan from './content/jurusan/Jurusan.jsx';
 import Nav from "./navbar/Nav.jsx"
-import Home from './component/Home.jsx';
-import ContactUs from './component/ContactUs.jsx';
+import Home from './content/Home.jsx';
+import ContactUs from './content/ContactUs.jsx';
 import Footer from './footer/Footer.jsx';
-import Blog from './component/Blog.jsx';
-import DaftarGuru from './component/profil/DaftarGuru.jsx';
-import DaftarKaryawan from './component/profil/DaftarKaryawan.jsx';
-import Sejarah from './component/profil/Sejarah.jsx';
-import StrukturOrganisasi from './component/profil/StrukturOrganisasi.jsx';
-import VisiMisi from './component/profil/VisiMisi.jsx';
-import Fasilitas from './component/pembahasan/Fasilitas.jsx';
-import KegiatanMahasiswa from './component/pembahasan/KegiatanMahasiswa.jsx';
-import Kurikulum from './component/pembahasan/Kurikulum.jsx';
-import PrestasiGuru from './component/prestasi/PrestasiGuru.jsx';
-import PrestasiSekolah from './component/prestasi/PrestasiSekolah.jsx';
-import PrestasiSiswa from './component/prestasi/PrestasiSiswa.jsx';
+import Blog from './content/Blog.jsx';
+import DaftarGuru from './content/profil/DaftarGuru.jsx';
+import DaftarKaryawan from './content/profil/DaftarKaryawan.jsx';
+import Sejarah from './content/profil/Sejarah.jsx';
+import StrukturOrganisasi from './content/profil/StrukturOrganisasi.jsx';
+import VisiMisi from './content/profil/VisiMisi.jsx';
+import Fasilitas from './content/pembelajaran/Fasilitas.jsx';
+import KegiatanMahasiswa from './content/pembelajaran/KegiatanMahasiswa.jsx';
+import Kurikulum from './content/pembelajaran/Kurikulum.jsx';
+import PrestasiGuru from './content/prestasi/PrestasiGuru.jsx';
+import PrestasiSekolah from './content/prestasi/PrestasiSekolah.jsx';
+import PrestasiSiswa from './content/prestasi/PrestasiSiswa.jsx';
 import { jurusanData } from './data/NavSubItem.jsx';
 
 function app() {
+
     return (
         <React.StrictMode>
             <BrowserRouter>
@@ -28,7 +29,7 @@ function app() {
                     <div className='sticky top-0'>
                         <Nav />
                     </div>
-                    <div className='flex-1 flex h-auto justify-center items-center ' >
+                    <div className='flex-1 flex h-auto justify-center' >
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/contact-us" element={<ContactUs />} />

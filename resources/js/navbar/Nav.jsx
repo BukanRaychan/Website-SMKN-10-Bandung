@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import logo_sma from '../assets/Logo-SMK-10-Bandung.png'
+import logo_sma from '../assets/img/Logo-SMK-10-Bandung.png'
 import { FaTimes } from 'react-icons/fa'
 import { HiMenuAlt3 } from "react-icons/hi";
 import LargeScreenNavLink from './LargeScreenNavLink'
@@ -31,7 +31,7 @@ function Nav() {
   return (
     <nav className=''>
       <div className='sticky top-0'>
-        <div className='h-10vh flex justify-between z-50 border-b border-grey bg-white text-black  px-20 py-4'>
+        <div className='h-10vh flex justify-between z-50 border-b border-grey bg-white text-black px-10 md:px-20 py-4'>
           <div className='flex items-center flex-1 cursor-default'>
             <img className='size-10' src={logo_sma} alt='SMK 10 Bandung Logo' />
             <div className='ms-5 text-[14px] font-semibold'>

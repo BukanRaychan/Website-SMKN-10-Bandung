@@ -1,4 +1,4 @@
-import { getAllJurusan } from "./JurusanData";
+import { getAllJurusan } from "./JurusanDataService";
 
 
 export const ProfilData = [
@@ -39,7 +39,7 @@ export const PembelajaranData = [
     },
 ];
 
-export const jurusanData = getAllJurusan();
+export const jurusanData = await getAllJurusan();
 
 export const PrestasiData = [
     {

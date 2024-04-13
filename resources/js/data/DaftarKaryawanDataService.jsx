@@ -1,4 +1,4 @@
-export const getAllJurusan = () => {
+export const getAllDaftarKaryawan = async() => {
     return [
         {
             "title": "Seni dan Budaya",
