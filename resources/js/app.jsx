@@ -25,11 +25,11 @@ function app() {
     return (
         <React.StrictMode>
             <BrowserRouter>
-                <div className='flex flex-col min-h-[100vh]'>
+                <div className='flex flex-col min-h-[100vh] min-w-[100wh]'>
                     <div className='sticky top-0'>
                         <Nav />
                     </div>
-                    <div className='flex-1 flex h-auto justify-center' >
+                    <div className='flex flex-1 h-auto justify-center px-10 md:px-20 py-7' >
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/contact-us" element={<ContactUs />} />

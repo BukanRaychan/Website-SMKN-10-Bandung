@@ -15,7 +15,7 @@ function Nav() {
   }
 
   const content = (
-    <div className='xl:hidden block absolute w-full left-0 right-0 bg-white transition'>
+    <div className='lg:hidden block absolute w-full left-0 right-0 bg-white transition'>
       <ul className='text-center text-[14px]'>
         <SmallScreenNavLink title="Home" endpoint="/" handleClick={handleClickLink}/>
         <SmallScreenNavLink title="Profil" handleClick={handleClickLink} subMenu={ProfilData}/>
@@ -32,15 +32,15 @@ function Nav() {
     <nav className=''>
       <div className='sticky top-0'>
         <div className='h-10vh flex justify-between z-50 border-b border-grey bg-white text-black px-10 md:px-20 py-4'>
-          <div className='flex items-center flex-1 cursor-default'>
+          <div className='flex items-center justify-center cursor-default'>
             <img className='size-10' src={logo_sma} alt='SMK 10 Bandung Logo' />
-            <div className='ms-5 text-[14px] font-semibold'>
+            <div className='hidden md:block  ms-2 text-[14px] font-semibold'>
               SMKN 10 Bandung
             </div>
           </div>
           <div className='flex items-center justify-end'>
-            <div className='hidden xl:inline-block'>
-              <ul className='flex gap-8 text-[14px] font-medium'>
+            <div className='hidden lg:block'>
+              <ul className='flex gap-7 text-[14px] font-medium'>
                 <LargeScreenNavLink title="Home" endpoint="/"/>
                 <DropdownNavLink title="Profil" subMenu={ProfilData}/>
                 <DropdownNavLink title="Pembelajaran" subMenu={PembelajaranData}/>
@@ -51,7 +51,7 @@ function Nav() {
               </ul>
             </div>
           </div>
-          <button className='block xl:hidden transisition scale-150' onClick={() => setClick(!click)}>
+          <button className='block lg:hidden transisition scale-150' onClick={() => setClick(!click)}>
             {click ? <FaTimes /> : <HiMenuAlt3 />}
           </button>
         </div>

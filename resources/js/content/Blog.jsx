@@ -3,7 +3,7 @@ import ContentTitle from '../assets/component/ContentTitle'
 
 function Blog() {
   return (
-    <ContentTitle title='BLOG' subTitle='SEKOLAH' />
+    <ContentTitle subTitle='BLOG' />
   )
 }
 
