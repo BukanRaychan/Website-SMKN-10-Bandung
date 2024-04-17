@@ -4,7 +4,7 @@ function AppTable({ contents = [["Content", "ID"], ["Data 1", 101], ["Data 2", 1
     
 
     return (
-        <>
+        <div className='overflow-x-auto'>
             <table className='w-full text-[14px]'>
                 <thead className='bg-lighttertiary text-white'>
                     <tr className='font-semibold'>
@@ -25,7 +25,7 @@ function AppTable({ contents = [["Content", "ID"], ["Data 1", 101], ["Data 2", 1
                     ))}
                 </tbody>
             </table>
-        </>
+        </div>
     )
 }
 

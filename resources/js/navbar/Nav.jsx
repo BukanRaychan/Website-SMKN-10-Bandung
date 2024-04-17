@@ -30,8 +30,8 @@ function Nav() {
 
   return (
     <nav className=''>
-      <div className='sticky top-0'>
-        <div className='h-10vh flex justify-between z-50 border-b border-grey bg-white text-black px-10 md:px-20 py-4'>
+      <div className='z-50'>
+        <div className='h-10vh flex justify-between border-b border-grey bg-white text-black px-10 md:px-20 py-4'>
           <div className='flex items-center justify-center cursor-default'>
             <img className='size-10' src={logo_sma} alt='SMK 10 Bandung Logo' />
             <div className='hidden md:block  ms-2 text-[14px] font-semibold'>
