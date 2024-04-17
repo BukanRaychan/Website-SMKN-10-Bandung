@@ -6,7 +6,7 @@ import Nav from "./navbar/Nav.jsx"
 import Home from './content/Home.jsx';
 import ContactUs from './content/ContactUs.jsx';
 import Footer from './footer/Footer.jsx';
-import Blog from './content/Blog.jsx';
+import Blog from './content/blog/Blog.jsx';
 import DaftarGuru from './content/profil/DaftarGuru.jsx';
 import DaftarKaryawan from './content/profil/DaftarKaryawan.jsx';
 import Sejarah from './content/profil/Sejarah.jsx';
@@ -19,6 +19,7 @@ import PrestasiGuru from './content/prestasi/PrestasiGuru.jsx';
 import PrestasiSekolah from './content/prestasi/PrestasiSekolah.jsx';
 import PrestasiSiswa from './content/prestasi/PrestasiSiswa.jsx';
 import { jurusanData } from './data/NavSubItem.jsx';
+import BlogDetail from './content/blog/BlogDetail.jsx';
 
 function app() {
 
@@ -33,7 +34,10 @@ function app() {
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/contact-us" element={<ContactUs />} />
-                            <Route path='/blog' element={<Blog />} />
+                            <Route path="/blog">
+                                <Route path="" element={<Blog />} />
+                                <Route path=":id" element={<BlogDetail />} />
+                            </Route>
                             <Route path='/daftar-guru' element={<DaftarGuru />} />
                             <Route path='/daftar-karyawan' element={<DaftarKaryawan />} />
                             <Route path='/sejarah' element={<Sejarah />} />
@@ -60,7 +64,7 @@ function app() {
                 </div>
             </BrowserRouter>
         </React.StrictMode>
-    )   
+    )
 }
 
 export default app

@@ -1,5 +1,5 @@
 import React from 'react'
-import ContentTitle from '../assets/component/ContentTitle'
+import ContentTitle from '../../assets/component/ContentTitle'
 
 function Blog() {
   return (
