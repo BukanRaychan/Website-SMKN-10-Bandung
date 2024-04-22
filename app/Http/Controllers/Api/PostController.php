@@ -3,29 +3,33 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
-class UserController extends Controller
+class PostController extends Controller
 {
     public function index(Request $request){
         try {
-            $data = User::select(
-                "id",
-                "name",
-                "email",
-                "username",
-                "role",
-                "created_at"
+            $data = Post::select(
+                "posts.id as id",
+                "title",
+                "slug",
+                "content",
+                "thumbnail",
+                "posts.status as status",
+                "posts.created_at as created_at"
             )
+                ->join("users", "posts.user_id", "=", "users.id")
                 ->where(function ($query) use ($request) {
                     if ($request->id != null) {
-                        $query->where("id", $request->id);
+                        $query->where("posts.id", $request->id);
                     }
                 })
                 ->orderByDesc("created_at")
@@ -34,7 +38,7 @@ class UserController extends Controller
             if($request->id != null){
                 return response()->json(
                     [
-                        "message" => "Get user success",
+                        "message" => "Get post success",
                         "status" => true,
                         "data" => $data
                     ],
@@ -43,7 +47,7 @@ class UserController extends Controller
             } else {
                 return response()->json(
                     [
-                        "message" => "Get all user success",
+                        "message" => "Get all post success",
                         "status" => true,
                         "data" => $data
                     ],
@@ -53,7 +57,7 @@ class UserController extends Controller
         } catch (Exception $th) {
             return response()->json(
                 [
-                    "message" => "Get all user failed",
+                    "message" => "Get all post failed",
                     "status" => false,
                     "error" => $th->getMessage()
                 ],
@@ -68,11 +72,12 @@ class UserController extends Controller
             $validate = Validator::make(
                 $request->all(),
                 [
-                    "name" => "required",
-                    "email" => "required|unique:users,email|email",
-                    "username" => "required|unique:users,username",
-                    "password" => "required",
-                    "role" => "required"
+                    "title" => "required|unique:posts,title",
+                    "slug" => "required|unique:posts,slug",
+                    "content" => "required",
+                    "thumbnail" => "required|image|mimes:jpeg,png,jpg|max:2048",
+                    //"user_id" => "required",
+                    "status" => "required",
                 ]
             );
 
@@ -80,22 +85,26 @@ class UserController extends Controller
                 throw new Exception($validate->errors(), 1);
             }
 
-            User::create(
+            //upload image
+            $image = $request->file('thumbnail');
+            $image->storeAs('public/posts', $image->hashName());
+
+            Post::create(
                 [
                     "id" => Str::uuid()->toString(),
-                    "name" => $request->name,
-                    "email" => $request->email,
-                    "username" => $request->username,
-                    "password" => Hash::make($request->password),
-                    "role" => $request->role,
-                    "email_verified_at" => now(),
-                    "remember_token" => Str::random(10)
+                    "title" => $request->title,
+                    "slug" => $request->slug,
+                    "content" => $request->content,
+                    "status" => $request->status,
+                    "thumbnail" => $image->hashName(),
+                    //"user_id" => $request->user_id
+                    "user_id" => User::first()->id
                 ]
             );
 
             return response()->json(
                 [
-                    "message" => "Create new user success",
+                    "message" => "Create new post success",
                     "status" => true,
                 ],
                 200
@@ -103,7 +112,7 @@ class UserController extends Controller
         } catch (Exception $th) {
             return response()->json(
                 [
-                    "message" => "Create new user failed",
+                    "message" => "Create new post failed",
                     "status" => false,
                     "error" => $th->getMessage()
                 ],
@@ -115,12 +124,12 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $user = User::find($id);
+            $post = Post::find($id);
 
-            if (!$user) {
+            if (!$post) {
                 return response()->json(
                     [
-                        "message" => "User not found",
+                        "message" => "Post not found",
                         "status" => false
                     ],
                     404
@@ -130,17 +139,17 @@ class UserController extends Controller
             $validate = Validator::make(
                 $request->all(),
                 [
-                    "name" => "required",
-                    "email" => [
+                    "title" => [
                         'required',
-                        'email',
-                        Rule::unique('users')->ignore($id)
+                        Rule::unique('posts')->ignore($id)
                     ],
-                    "username" => [
+                    "slug" => [
                         'required',
-                        Rule::unique('users')->ignore($id)
+                        Rule::unique('posts')->ignore($id)
                     ],
-                    "role" => "required"
+                    "content" => "required",
+                    // "thumbnail" => "required|image|mimes:jpeg,png,jpg|max:2048",
+                    "status" => "required",
                 ]
             );
 
@@ -148,23 +157,42 @@ class UserController extends Controller
                 throw new Exception($validate->errors(), 1);
             }
 
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->username = $request->username;
-            $user->role = $request->role;
+            //check if image is not empty   
+            if ($request->hasFile('thumbnail')) {
 
-            $user->save();
+                //upload image
+                $image = $request->file('thumbnail');
+                $image->storeAs('public/posts', $image->hashName());
+
+                //delete old image
+                Storage::delete('public/posts/'.$post->thumbnail);
+
+                //update post with new image
+                $post->thumbnail = $image->hashName();
+                $post->title = $request->title;
+                $post->slug = $request->slug;
+                $post->content = $request->content;
+                $post->status = $request->status;
+                $post->save();
+            } else {
+                //update post without image
+                $post->title = $request->title;
+                $post->slug = $request->slug;
+                $post->content = $request->content;
+                $post->status = $request->status;
+                $post->save();
+            }
 
             return response()->json(
                 [
-                    "message" => "Update user success",
+                    "message" => "Update post success",
                     "status" => true
                 ], 200
             );
         } catch (Exception $th) {
             return response()->json(
                 [
-                    "message" => "Update user failed",
+                    "message" => "Update post failed",
                     "status" => false,
                     "error" => $th->getMessage()
                 ]
@@ -175,23 +203,24 @@ class UserController extends Controller
     public function destroy($id)
     {
         try {
-            $user = User::find($id);
+            $post = Post::find($id);
 
-            if (!$user) {
+            if (!$post) {
                 return response()->json(
                     [
-                        "message" => "User not found",
+                        "message" => "Post not found",
                         "status" => false
                     ],
                     404
                 );
             } else {
-                User::destroy($id);
+                Storage::delete('public/posts/'.$post->thumbnail);
+                Post::destroy($id);
             }
 
             return response()->json(
                 [
-                    "message" => "Delete user success",
+                    "message" => "Delete post success",
                     "status" => true
                 ],
                 200
@@ -199,7 +228,7 @@ class UserController extends Controller
         } catch (Exception $th) {
             return response()->json(
                 [
-                    "message" => "Delete user failed",
+                    "message" => "Delete post failed",
                     "status" => false
                 ],
                 500
